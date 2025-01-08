@@ -1,17 +1,14 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
 from xgboost import XGBClassifier
 
 # Load the trained model (Pipeline)
-model = joblib.load('cpred.pkl')  # Make sure the filename corresponds to your saved model
+model = joblib.load('cpred.pkl')  # Ensure the filename is correct
 
-# Function to preprocess user input and convert it into a DataFrame
-def preprocess_input(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
-    """
-    Converts input data into a DataFrame format that the model can accept.
-    """
+# Function to preprocess user input and make a prediction
+def make_prediction(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
+    # Prepare the input data as a DataFrame
     input_data = pd.DataFrame({
         'CreditScore': [CreditScore],
         'Geography': [Geography],
@@ -24,7 +21,10 @@ def preprocess_input(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOf
         'IsActiveMember': [IsActiveMember],
         'EstimatedSalary': [EstimatedSalary]
     })
-    return input_data
+    
+    # Make the prediction by passing the input DataFrame to the model
+    prediction = model.predict(input_data)  # Here we pass the entire DataFrame as a single argument
+    return prediction[0]
 
 # Streamlit App
 def main():
@@ -44,9 +44,8 @@ def main():
 
     # Predict on button click
     if st.button("Predict Churn"):
-        # Preprocess the input and make a prediction
-        input_data = preprocess_input(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
-        prediction = model.predict(input_data)
+        # Make prediction based on input
+        prediction = make_prediction(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
 
         # Display the result
         if prediction == 0:
