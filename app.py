@@ -12,7 +12,7 @@ import joblib
 from xgboost import XGBClassifier
 
 # Load the trained model (Pipeline)
-model = joblib.load('chrunp.pkl')
+model = joblib.load('chrunp.pkl')  # Make sure the filename corresponds to your saved model
 
 # Set the title of the application
 st.title("Customer Churn Prediction")
@@ -32,7 +32,7 @@ def predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts,
         'IsActiveMember': [IsActiveMember],
         'EstimatedSalary': [EstimatedSalary]
     })
-
+    
     # Preprocess and predict with the model (assuming the pipeline handles preprocessing)
     prediction = model.predict(input_data)
     return prediction[0]
