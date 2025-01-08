@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jan  8 12:46:59 2025
-
-@author: Dell
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -12,21 +5,32 @@ import joblib
 from xgboost import XGBClassifier
 
 # Load the trained model (Pipeline)
-model = joblib.load('chrunp.pkl')  # Make sure the filename corresponds to your saved model
+model = joblib.load('cpred.pkl')  # Make sure the filename corresponds to your saved model
 
-# Set the title of the application
-st.title("Customer Churn Prediction")
+# Function to preprocess user input and convert it into a DataFrame
+def preprocess_input(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
+    """
+    Converts input data into a DataFrame format that the model can accept.
+    """
+    input_data = pd.DataFrame({
+        'CreditScore': [CreditScore],
+        'Geography': [Geography],
+        'Gender': [Gender],
+        'Age': [Age],
+        'Tenure': [Tenure],
+        'Balance': [Balance],
+        'NumOfProducts': [NumOfProducts],
+        'HasCrCard': [HasCrCard],
+        'IsActiveMember': [IsActiveMember],
+        'EstimatedSalary': [EstimatedSalary]
+    })
+    return input_data
 
-# Define the prediction function
-def predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
-    prediction = model.predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
-    return prediction[0]
-
-# Streamlit app
+# Streamlit App
 def main():
-    st.markdown('### Enter the customer details to predict churn')
+    st.title("Customer Churn Prediction")
 
-    # Create input fields for user input
+    # Input fields
     CreditScore = st.number_input("Credit Score", min_value=300, max_value=850, value=650)
     Geography = st.selectbox("Geography", options=["France", "Germany", "Spain"])
     Gender = st.selectbox("Gender", options=["Male", "Female"])
@@ -40,8 +44,11 @@ def main():
 
     # Predict on button click
     if st.button("Predict Churn"):
-        prediction = predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
-        
+        # Preprocess the input and make a prediction
+        input_data = preprocess_input(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
+        prediction = model.predict(input_data)
+
+        # Display the result
         if prediction == 0:
             st.success("This customer is likely to stay!")
         else:
