@@ -11,8 +11,8 @@ import numpy as np
 import joblib
 from xgboost import XGBClassifier
 
-# Load the trained model (Pipeline)
-model = joblib.load('chrunp.pkl')
+# Load the trained XGBoost model (Pipeline)
+model = joblib.load('chrunp.pkl')  # Make sure the model filename corresponds to your XGBoost model
 
 # Set the title of the application
 st.title("Customer Churn Prediction")
