@@ -9,7 +9,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-from sklearn.ensemble import GradientBoostingClassifier
+from xgboost import XGBClassifier
 
 # Load the trained model (Pipeline)
 model = joblib.load('chrunp.pkl')
