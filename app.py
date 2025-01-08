@@ -19,22 +19,7 @@ st.title("Customer Churn Prediction")
 
 # Define the prediction function
 def predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
-    # Create a DataFrame with the input values
-    input_data = pd.DataFrame({
-        'CreditScore': [CreditScore],
-        'Geography': [Geography],
-        'Gender': [Gender],
-        'Age': [Age],
-        'Tenure': [Tenure],
-        'Balance': [Balance],
-        'NumOfProducts': [NumOfProducts],
-        'HasCrCard': [HasCrCard],
-        'IsActiveMember': [IsActiveMember],
-        'EstimatedSalary': [EstimatedSalary]
-    })
-    
-    # Preprocess and predict with the model (assuming the pipeline handles preprocessing)
-    prediction = model.predict(input_data)
+    prediction = model.predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
     return prediction[0]
 
 # Streamlit app
