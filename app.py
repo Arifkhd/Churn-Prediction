@@ -1,25 +1,17 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jan  8 12:46:59 2025
-
-@author: Dell
-"""
-
+# Streamlit app for debugging
 import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-from xgboost import XGBClassifier
 
-# Load the trained model (Pipeline)
-model = joblib.load('chrunp.pkl')  # Make sure the filename corresponds to your saved model
+# Load the trained model
+model = joblib.load('chrunp.pkl')
 
-# Set the title of the application
-st.title("Customer Churn Prediction")
+# Print out model details for debugging
+st.write(model)
 
 # Define the prediction function
 def predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
-    # Create a DataFrame with the input values
     input_data = pd.DataFrame({
         'CreditScore': [CreditScore],
         'Geography': [Geography],
@@ -33,15 +25,16 @@ def predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts,
         'EstimatedSalary': [EstimatedSalary]
     })
     
-    # Preprocess and predict with the model (assuming the pipeline handles preprocessing)
-    prediction = model.predict(input_data)
+    # Try predicting with raw data first
+    prediction = model.predict(input_data)  # Check if the model works with this input
     return prediction[0]
 
-# Streamlit app
+# Streamlit interface
 def main():
-    st.markdown('### Enter the customer details to predict churn')
+    st.title("Customer Churn Prediction")
+    st.markdown('### Enter customer details to predict churn')
 
-    # Create input fields for user input
+    # Input fields for user
     CreditScore = st.number_input("Credit Score", min_value=300, max_value=850, value=650)
     Geography = st.selectbox("Geography", options=["France", "Germany", "Spain"])
     Gender = st.selectbox("Gender", options=["Male", "Female"])
@@ -53,7 +46,6 @@ def main():
     IsActiveMember = st.selectbox("Is Active Member", options=[0, 1], index=1)
     EstimatedSalary = st.number_input("Estimated Salary", min_value=10000.0, value=50000.0)
 
-    # Predict on button click
     if st.button("Predict Churn"):
         prediction = predict(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
         
