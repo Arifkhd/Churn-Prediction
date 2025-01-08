@@ -12,7 +12,7 @@ import joblib
 from sklearn.ensemble import GradientBoostingClassifier
 
 # Load the trained model (Pipeline)
-model = joblib.load('chrun_pred.pkl')
+model = joblib.load('chrunp.pkl')
 
 # Set the title of the application
 st.title("Customer Churn Prediction")
