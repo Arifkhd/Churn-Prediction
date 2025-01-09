@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 import joblib
-from xgboost import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 # Load the trained model (Pipeline)
-model = joblib.load('cpred.pkl')  # Ensure the filename is correct
+model = joblib.load('cpr.pkl')  # Ensure the filename is correct
 
 # Function to preprocess user input and make a prediction
 def make_prediction(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
